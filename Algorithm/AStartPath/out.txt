@@ -1,0 +1,90 @@
+Result Map
+S----E
+
+Result Map
+-----E
+S****.
+
+Result Map
+*----E
+*-***.
+*S*...
+
+Result Map
+----E...
+-XXXXXX.
+-X***X..
+-X-S*X..
+-X-**X..
+-X-**X..
+---***..
+*****...
+
+Result Map
+S----E
+
+Result Map
+-----E
+S****.
+
+Result Map
+*----E
+*-***.
+*S*...
+
+Result Map
+----E...
+-XXXXXX.
+-X***X..
+-X-S*X..
+-X-**X..
+-X-**X..
+---***..
+*****...
+
+Result Map
+*****S----
+**XXXXX**-
+*********-
+****XXX**-
+********--
+XXXXX***--
+X....X*X--
+.E***X**--
+*---------
+.*********
+
+Result Map
+S----E
+
+Result Map
+-----E
+S****.
+
+Result Map
+*----E
+*-***.
+*S*...
+
+Result Map
+----E...
+-XXXXXX.
+-X***X..
+-X-S*X..
+-X-**X..
+-X-**X..
+---***..
+*****...
+
+Result Map
+*****S----
+**XXXXX**-
+*********-
+****XXX**-
+********--
+XXXXX***--
+X....X*X--
+.E***X**--
+*---------
+.*********
+
