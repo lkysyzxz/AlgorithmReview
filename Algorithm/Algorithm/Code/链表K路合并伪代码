@@ -1,0 +1,8 @@
+initialize arr[k];
+initialize newList;
+for i = 1 upto k
+	arr[i] = list[i].first;
+for j=n-k down to 1
+	BuildHeap(arr)(忽略细节)
+	insert(arr[0], newList);
+	arr[0] = arr[0].next(可能这里是地址，需要取值)

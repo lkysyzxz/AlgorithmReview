@@ -1,0 +1,106 @@
+/*Created by Dandelion
+	QuickSort On List
+	思路:和数组上的快排一样，但是有一些细节需要注意
+		 排序的时候返回的指针可能在边界，这样就会造成越界，需要特判一下
+		  基本思路和一般的快排一样
+		  
+		QuickSortList(A,l,r)
+			if l == r or l == A.end or r == A.end
+				return;
+			  q = partion A l r
+			nxr = q
+			nxl = q
+			if nxr != A.head and nxr != l
+				nxr = prev(nxr)
+			if nxl != r
+				nxl = next(nxl)
+			QuickSortList(A,l,nxr)
+			QuickSortList(A,nxl,r)
+			
+		partion(A,l,r)
+			x = value(r)
+			i = null
+			for j = l to r and j != r
+				if value(j) <= x
+					if i == null
+						i=l
+					else
+						i = i+1
+					exchange value(j) with value(i)
+			if i == null
+				i = l
+			else
+				i = i+1
+			exchange value(i) with value(r)
+			*/
+	
+
+
+#include<list>
+#include<iostream>
+#include<iterator>
+using namespace std;
+list<int> A;
+list<int>::iterator partion(list<int> &arr, list<int>::iterator l, list<int>::iterator r)
+{
+	int x = *r;
+	list<int>::iterator i=arr.end();
+	for (list<int>::iterator j = l; j != r;j++)
+		if (*j<=x)
+		{
+			if (i == arr.end())
+			{
+				i = l;
+			}
+			else
+				i++;
+			int temp = *i;
+			*i = *j;
+			*j = temp;
+		}
+	if (i == arr.end())
+		i = l;
+	else
+		i++;
+	int temp = *i;
+	*i = *r;
+	*r = temp;
+	return i;
+
+}
+void QuickSort(list<int> &arr, list<int>::iterator l, list<int>::iterator r)
+{
+	if (l == r || r == arr.end() || l == arr.end())
+		return;
+	list<int>::iterator q = partion(arr, l, r);
+	list<int>::iterator r_nx = q;
+	list<int>::iterator l_nx = q;
+	if (r_nx != arr.begin()&&r_nx!=l)
+		r_nx--;
+	if (l_nx!=r)
+		l_nx++;
+	
+
+	QuickSort(arr, l, r_nx);
+	QuickSort(arr, l_nx, r);
+}
+int main()
+{
+	int x;
+	for (int i = 1; i <= 10; i++)
+	{
+		cin >> x;
+		A.push_back(x);
+	}
+	list<int>::iterator l = A.begin();
+	list<int>::iterator r = A.end();
+	r--;
+	QuickSort(A, l, r);
+	ostream_iterator<int> out_iter(cout, " ");
+	list<int>::iterator head = A.begin();
+	while (head != A.end())
+	{
+		out_iter++ = *head++;
+	}
+	return 0;
+}

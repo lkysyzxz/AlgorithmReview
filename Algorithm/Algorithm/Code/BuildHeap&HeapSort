@@ -1,0 +1,56 @@
+/*
+Created by Dandelion   2015.8.12
+	  Heap&&HeapSort
+建堆:
+	从最底层 最后一个叶子节点一直到 1 从尾部调整 最大堆
+	调整的时候是逐层往下调整
+堆排:
+	交换头尾元素
+	从头元素开始逐层往下调整堆，但是要注意的是，不能调整刚更换到尾端的元素，因为更换下去的都是最大的元素，不能再上调
+	
+类比：
+	建堆的时候堆顶的元素是最大的，从头把元素拿出来，放到另一个位置（传统的做法是尾端，只要保证在调整过程中不被访问到）
+	然后重新调整堆，这时会把又一个最大的元素调到堆顶，重复这些步骤就会得到从小到大排序的序列*/
+
+#include<iostream>
+#include<string>
+#include<cstring>
+#include<algorithm>
+using namespace std;
+int A[15] = {0,4,5,1,7,95,4,3,5,7,2,9,3,1,4};
+int node[15];
+void HeapAdjust(int arr[], int root, int size)
+{
+	int left;
+	int right;
+	int largest;
+	while (root * 2 <= size)
+	{
+		left = root * 2;
+		right = root * 2 + 1;
+		largest = root;
+		if (left <= size&&arr[left] > arr[largest])
+			largest = left;
+		if (right <= size&&arr[right] > arr[largest])
+			largest = right;
+		if (largest == root)
+			break;
+		else
+		{
+			swap(arr[largest], arr[root]);
+			root = largest;
+		}
+	}
+}
+int main()
+{
+	int size = 14;
+	for (int i = size / 2; i >= 1; i--)
+		HeapAdjust(A, i, size);		//建堆
+	for (int i = size; i > 1; i--)
+	{
+		swap(A[i], A[1]);
+		HeapAdjust(A, 1,i-1);// i-1 是尾部，不能被触碰到
+	}
+	return 0;
+}

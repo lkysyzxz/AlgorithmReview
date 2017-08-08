@@ -1,0 +1,106 @@
+/*
+Created By Dandelion
+	Priority Queue
+Operation:
+		  BuildHeap  :建堆的过程 从root 一直往下维护堆的性质
+		  Maximum    :取得队列中的最大值 时间复杂度是 O(1)
+		  Extract_Max:取得最大值并删除 需要重新从首节点维护堆的性质
+		 Increase_Key:将元素 i 的值增加到key, 需要做堆的调整 从i 的父亲节点开始一直到首节点，维护堆的性质
+			   Insert:插入新 key 到尾部，需要维护堆的性质
+					  Insert 的实现:
+									A.heap_size=A.heap_size+1;
+									A[A.heap_size]=-inf;
+									Increase_Key(A,A.heap_size,key);
+		  */
+
+#include<iostream>
+#include<string>
+#include<algorithm>
+using namespace std;
+int A[20] = { 0, 1, 2, 4, 5, 3, 5, 244, 442, 1, 3, 4, 5, 1, 4,9};
+//建堆 复杂度 O(n)
+void BuildHeap(int arr[], int root, int size)
+{
+	int left;
+	int right;
+	int largest;
+	while (root * 2 <= size)
+	{
+		left = root * 2;
+		right = root * 2 + 1;
+		largest = root;
+		if (left <= size&&arr[left] >arr[largest])
+			largest = left;
+		if (right <= size&&arr[right] >arr[largest])
+			largest = right;
+
+		if (largest == root)
+		{
+			break;
+		}
+		else
+		{
+			swap(arr[largest], arr[root]);
+			root = largest;
+		}
+	}
+}
+//返回优先队列最大值  时间复杂度O(1);
+int Maximum(int arr[])
+{
+	return arr[1];
+}
+
+//返回并删除队列中的最大值 复杂度O(lg n);
+int Priority_Queue_Extract_Max(int arr[], int size)
+{
+	if (size < 1)
+	{
+		cout << "error" << endl;
+		return 0;
+	}
+	int max = arr[1];
+	arr[1] = arr[size];
+	size--;
+	BuildHeap(arr, 1, size);
+	return max;
+}
+
+//将 元素 i 的 值 增加到 key
+//key>=x;
+void Heap_Increase_Key(int arr[], int i, int key)
+{
+	if (key < arr[i])
+	{
+		cout << "Error" << endl;
+		return;
+	}
+	arr[i] = key;
+	int cur = i;
+	while (cur > 1 && arr[cur / 2]<arr[cur])
+	{
+		swap(arr[cur / 2], arr[cur]);
+		cur = cur / 2;
+	}
+}
+
+//插入一个元素
+void Priority_Queue_Insert(int arr[], int x, int &size)
+{
+	if (size + 1 >=25)
+	{
+		cout << "越界" << endl;
+		return;
+	}
+	arr[++size] = -0x3f3f3f;//扩展尾部 赋值为无穷小
+	Heap_Increase_Key(arr, size, x);//把尾部的值增加到x;
+}
+int main()
+{
+	int size = 15;
+	for (int i = size / 2; i >= 1; i--)
+		BuildHeap(A, i, size);
+	Heap_Increase_Key(A, size, 500);
+	Priority_Queue_Insert(A, 600, size);
+	return 0;
+}

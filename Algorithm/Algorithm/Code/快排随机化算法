@@ -1,0 +1,50 @@
+/*Created by Dandelion
+QuickSort
+思路: 快排有两部分，先处理，再分区间，每一次处理的时候，都能通过交换 把主元放到合适的位置
+QuickSort A l r
+if(l<=r)
+q = partion A l r
+QuickSort A  l  q-1
+QuickSort A q+1 r
+else
+return
+*/
+
+#include<iostream>
+#include<algorithm>
+#include<string>
+#include<ctime>
+#include<cstdlib>
+using namespace std;
+int A[15] = { 0, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
+int cnt;
+int Partion(int arr[], int l, int r)
+{
+	int x = arr[r];
+	int i = l - 1;
+	for (int j = l; j <= r - 1; j++)
+		if (arr[j] <= x)
+		{
+			i = i + 1;
+			swap(arr[j], arr[i]);
+		}
+	swap(arr[++i], arr[r]);
+	return i;
+}
+void QuickSort(int arr[], int l, int r)
+{
+	if (l >= r)
+		return;
+	int index = rand() % (r - l + 1) + l;
+	swap(arr[index],arr[r]);
+	int par = Partion(arr, l, r);
+	QuickSort(arr, l, par - 1);
+	QuickSort(arr, par + 1, r);
+}
+
+int main()
+{
+	srand(time(NULL));
+	QuickSort(A, 1, 10);
+	return 0;
+}

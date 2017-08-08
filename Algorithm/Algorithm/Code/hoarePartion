@@ -1,0 +1,44 @@
+#include<iostream>
+#include<string>
+#include<cstring>
+#include<algorithm>
+using namespace std;
+int A[15] = { 0,9,8,7,6,5,6,7,8,9 };
+int HorePartion(int arr[], int l, int r)
+{
+	int x = arr[l];
+	int i = l - 1;
+	int j = r + 1;
+	while (true)
+	{
+		do
+		{
+			j = j - 1;
+		} while (arr[j]> x);
+		
+		do
+		{
+			i = i + 1;
+		} while (arr[i] <x);
+
+		if (i < j)
+			swap(arr[i], arr[j]);
+		else
+			return j;
+	}
+}
+
+void QuickSort(int arr[], int l, int r)
+{
+	if (l >= r)
+		return;
+	int q = HorePartion(arr, l, r);
+			QuickSort(arr, l, q);
+			QuickSort(arr, q + 1, r);
+}
+int main()
+{
+	
+	QuickSort(A, 1, 10);
+	return 0;
+}

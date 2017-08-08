@@ -1,0 +1,95 @@
+#pragma once
+#include<iostream>
+template<class Type>
+struct Node
+{
+	long long np;
+	Type Item;
+};
+
+template<class Type>
+class List
+{
+
+private:
+	Node<Type> nil;
+	int size;
+	Node<Type> *tail;
+public:
+	List();
+	Node<Type> *Search(const Type &Item);
+	bool Insert(const Type &Item);
+	bool Delete(const Type &Item);
+};
+
+template<class Type>
+List<Type>::List()
+	:size(0)
+{
+	nil.Item = NULL;
+	nil.np = NULL^NULL;
+	tail = &nil;
+}
+
+template<class Type>
+Node<Type>* List<Type>::Search(const Type&Item) {
+	Node<Type>* prev = NULL;
+	Node<Type>* now = &nil;
+	Node<Type>* temp;
+	while ((now!=NULL) && now->Item != Item) {
+		temp = now;
+		now =(Node<Type>*)(now->np^(long long)prev);//下一个节点
+		prev = temp;
+	}
+	return now;
+}
+
+template<class Type>
+bool List<Type>::Insert(const Type &item) {
+	Node<Type>* newNode = new Node<Type>;
+	Node<Type>* prev;//尾端的前驱节点
+	newNode->Item = item;
+	newNode->np = (long long)tail^NULL;//前 异或 后
+	prev =(Node<Type>*)( NULL^(long long)tail->np);
+	tail->np = (long long)prev^(long long)newNode;
+	tail = newNode;
+	size++;
+	return true;
+}
+
+template<class Type>
+bool List<Type>::Delete(const Type &item) {
+	//Copy From Search
+	Node<Type>* prev = NULL;
+	Node<Type>* now  = &nil;
+	Node<Type>* temp       ;
+	while ((now != NULL) && (now->Item != item)) {
+		temp = now;
+		now = (Node<Type>*)(now->np ^ (long long)prev);
+		prev = temp;
+	}
+
+	Node<Type>* prev_prev;
+	Node<Type>* next_next;
+	Node<Type>* next;
+
+	if (now == NULL)
+		return false;
+
+	
+	prev_prev = (Node<Type>*)((long long)now  ^  prev->np);
+	if (now == tail){
+		prev->np = (long long)prev_prev^NULL;
+	}
+	else {
+		     next = (Node<Type>*)(now ->np ^ (long long)prev);
+		next_next = (Node<Type>*)(next->np ^ (long long)now );
+		prev->np = (long long)prev_prev    ^ (long long)next;
+		next->np = (long long)prev         ^ (long long)next_next;
+	}
+	delete now;
+	size--;
+	return true;
+//	if(now==tail)
+
+}

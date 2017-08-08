@@ -11,9 +11,23 @@
 #include<iostream>
 #include<fstream>
 #include<algorithm>
-#include<set>
 #include<string>
+#include<set>
+#include"Heap.h"
 using namespace std;
+struct Point {
+	int x;
+	int y;
+	bool operator<(const Point& t)const {
+		if (x != t.x)return x < t.x;
+		else return y < t.y;
+	}
+
+	bool operator==(const Point& t)const {
+		return x == t.x&&y == t.y;
+	}
+
+};
 struct Node
 {
 	int x, y;
@@ -24,24 +38,15 @@ struct Node
 	}
 
 	bool operator<(const Node& t)const {
-		return f < t.f;
+		return f <= t.f;
 	}
 
 	bool operator==(const Node& t)const {
-		return t.x == x&&t.y == y;
+		return x == t.x&&y == t.y;
 	}
 };
 
-struct Point {
-	int x;
-	int y;
-	bool operator<(const Point& t)const {
-		if (x != t.x)return x < t.x;
-		else return y < t.y;
-	}
 
-
-};
 
 
 int n, m;
@@ -52,30 +57,18 @@ int G[555][555] = { 0 };
 int addX[4] = { 0,-1,0,1 };
 int addY[4] = { -1,0,1,0 };
 Point path[555][555] = { 0 };
-set<Node> openSet;
+PriorityQueue<Node> openSet;
 set<Point> closeSet;
 int HValue(int x, int y)
 {
 	int dx = abs(x - endPoint.x);
 	int dy = abs(y - endPoint.y);
-	return dx + dy;
+	return (sqrt(dx*dx + dy*dy)+0.5);
 }
 int FValue(int x, int y, int nx, int ny) {
 	return G[x][y] + 1 + HValue(nx, ny);
 }
 
-set<Node>::iterator FindNode(const Node& t)
-{
-	set<Node>::iterator p = openSet.begin();
-	while (p != openSet.end())
-	{
-		if ((*p) == t) {
-			return p;
-		}
-		p++;
-	}
-	return openSet.end();
-}
 void BeginAstart()
 {
 	for (int i = 1; i <= n; i++) {
@@ -86,12 +79,11 @@ void BeginAstart()
 	}
 	G[startPoint.x][startPoint.y] = -1;
 	path[startPoint.x][startPoint.y] = startPoint;
-	openSet.insert(Node(startPoint.x, startPoint.y, FValue(startPoint.x, startPoint.y, startPoint.x, startPoint.y)));
+	openSet.Push(Node(startPoint.x, startPoint.y, FValue(startPoint.x, startPoint.y, startPoint.x, startPoint.y)));
 	do
 	{
-		set<Node>::iterator pu = openSet.begin();
-		Node u = *pu;
-		openSet.erase(pu);
+		Node u = openSet.Top();
+		openSet.Pop();
 		closeSet.insert(Point{ u.x,u.y });
 		int ux = u.x;
 		int uy = u.y;
@@ -115,26 +107,26 @@ void BeginAstart()
 				Point nxPoint{ nx,ny };
 				if (closeSet.find(nxPoint) == closeSet.end())
 				{
-					set<Node>::iterator p = FindNode(nxNode);
-					
-					if (p == openSet.end())
+					int res = openSet.Find(nxNode);
+
+					if (res == -1)
 					{
 						//This point not in the open set.
 						path[nx][ny] = Point{ ux,uy };
-						openSet.insert(nxNode);
+						openSet.Push(nxNode);
 						if (mp[nx][ny] != 'E'&&mp[nx][ny] != 'S')
 							mp[nx][ny] = '*';
 					}
 					else
 					{
 						//This point in the open set.
-						Node newNode = *p;
-						openSet.erase(p);
+						Node newNode = openSet.GetItem(res);
 						if (F < newNode.f)
+						{
 							newNode.f = F;
-						openSet.insert(newNode);
-						if (mp[nx][ny] != 'E'&&mp[nx][ny] != 'S')
-							mp[newNode.x][newNode.y] = '*';
+							path[nx][ny] = Point{ ux,uy };
+							openSet.UpdateElement(res, newNode);
+						}
 					}
 				}
 				else
@@ -144,7 +136,7 @@ void BeginAstart()
 			}
 		}
 
-	} while (!openSet.empty());
+	} while (openSet.Size()>0);
 
 
 }
@@ -180,7 +172,7 @@ void EndAstart()
 	fout << endl;
 	fout.close();
 	closeSet.clear();
-	openSet.clear();
+	openSet.Clear();
 	for (int i = 1; i <= n; i++)
 	{
 		for (int j = 1; j <= m; j++)

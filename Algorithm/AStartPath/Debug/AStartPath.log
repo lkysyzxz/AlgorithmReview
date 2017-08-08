@@ -1,2 +1,3 @@
 ﻿  Main.cpp
-  AStartPath.vcxproj -> C:\Code\Algorithm\Debug\AStartPath.exe
+c:\code\git\algorithmreview\algorithm\astartpath\main.cpp(66): warning C4244: “return”: 从“double”转换到“int”，可能丢失数据
+  AStartPath.vcxproj -> C:\Code\Git\AlgorithmReview\Algorithm\Debug\AStartPath.exe
