@@ -1,1 +1,2 @@
-﻿  AVLTree.vcxproj -> C:\Code\Git\AlgorithmReview\Algorithm\Debug\AVLTree.exe
+﻿  AVLMain.cpp
+c:\code\git\algorithmreview\algorithm\avltree\avlmain.cpp(6): error C2144: 语法错误:“int”的前面应有“;”
